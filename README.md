@@ -38,3 +38,7 @@ This is different to regular list virtualization but I think it could be interes
 to implement and I can always get back to normal list virtualization (pop elements
 that go out of screen and put them to the gap their being-scrolled-away has
 created with them again but with different content this time).
+
+---
+
+- Use `margin` over padding `div`s

@@ -1,5 +1,10 @@
 window.addEventListener('load', () => {
   const arrayBuffer = new ArrayBuffer(1000);
+  const byteArray = new Uint8Array(arrayBuffer);
+  byteArray[0] = 1;
+  byteArray[1 + 16 * 1] = 2;
+  byteArray[2 + 16 * 2] = 3;
+
   const dataView = new DataView(arrayBuffer);
 
   const columnCount = 16;
@@ -22,30 +27,35 @@ window.addEventListener('load', () => {
   boxDiv.append(footPadDiv);
 
   function render() {
-    const fullLines = (boxDiv.clientHeight / lineDiv.clientHeight);
-    console.log('full lines', fullLines);
+    // Ignore scroll events created when scrolling programatically (interferes with this logic)
+    boxDiv.removeEventListener('scroll', render);
 
-    const totalHeight = Math.ceil(boxDiv.offsetHeight / lineCount) * rowCount;
-    console.log('total height', totalHeight);
+    const hiddenCount = Math.floor(boxDiv.scrollTop / lineDiv.clientHeight);
 
-    //headPadDiv.style.height = `${boxDiv.scrollTop}px`;
-    //footPadDiv.style.height = `${totalHeight - boxDiv.offsetHeight - boxDiv.scrollTop}px`;
-    console.log('scroll height', boxDiv.scrollHeight);
+    for (let index = 0; index < lineCount; index++) {
+      const lineNumber = hiddenCount + index;
+      let line = '';
+      for (let subindex = 0; subindex < columnCount; subindex++) {
+        line += dataView.getUint8(lineNumber * columnCount + subindex) + ' ';
+      }
 
-    console.log(lineCount, columnCount, rowCount, totalHeight, boxDiv.scrollHeight, boxDiv.offsetHeight, boxDiv.clientHeight, headPadDiv.style.height, footPadDiv.style.height);
+      boxDiv.children[index + 1 /* Pad */].textContent = `${lineNumber}: ${line}`;
+    }
+
+    const idealHeight = rowCount * lineDiv.clientHeight;
+
+    const padHeight = idealHeight - lineCount * lineDiv.clientHeight;
+    const headHeight = Math.min(boxDiv.scrollTop, padHeight);
+    const footHeight = padHeight - headHeight;
+
+    headPadDiv.style.height = headHeight + 'px';
+    footPadDiv.style.height = footHeight + 'px';
+
+    // Restore listening to scroll events initated by the user
+    boxDiv.addEventListener('scroll', render);
   }
 
-  //boxDiv.addEventListener('scroll', render);
+  boxDiv.addEventListener('scroll', render);
 
   render();
-  // boxDiv.scrollTo(0, 0);
-  // render();
-  // boxDiv.scrollTo(0, 1);
-  // render();
-  // boxDiv.scrollTo(0, 2);
-  // render();
-  // boxDiv.scrollTo(0, 3);
-  // render();
-  // boxDiv.scrollTo(0, 4);
-  // render();
 });

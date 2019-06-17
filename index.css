@@ -10,7 +10,6 @@ body {
 }
 
 #boxDiv {
-  background: silver;
   height: 100%;
   overflow: auto;
 }
