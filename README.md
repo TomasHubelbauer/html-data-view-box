@@ -27,3 +27,6 @@ with respect to the visible area.
 - Make cells with the value of zero gray (in addition to the leading zero)
 - Make the number of cells configurable
 - Consider making this a custom DOM element
+  - https://developer.mozilla.org/en-US/docs/Web/Web_Components
+  - https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
+  - https://caniuse.com/#feat=custom-elementsv1
