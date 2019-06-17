@@ -34,3 +34,8 @@ body {
   font-family: monospace;
   margin: 0 .5ex;
 }
+
+#boxDiv .cellSpan.leading-zero::before {
+  color: gray;
+  content: '0';
+}

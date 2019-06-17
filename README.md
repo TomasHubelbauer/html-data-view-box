@@ -20,8 +20,8 @@ with respect to the visible area.
   - Do the same group-wise if more then 1 went off-screen
 - Test this on mobile and try to fix this based on mobile testing feedback
 - See if flex on the line might be faster than `display: inline-block` on the spans
-- Make leading zeroes gray
 - Consider introducing a toggle for the stick-line behavior
   - If enabled, the first line will be scrolled in accordance to the scrollbar
     position, not stuck on top of the container reflecting the minute changes in
     scroll instead of just flickering with new values
+- Make cells with the value of zero gray (in addition to the leading zero)

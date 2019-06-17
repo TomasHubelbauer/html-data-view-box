@@ -41,12 +41,15 @@ window.addEventListener('load', () => {
       const lineIndex = hiddenCount + index;
 
       // Update the line number span
-      boxDiv.children[index].children[0].textContent = lineIndex + 1;
+      const lineNumberSpan = boxDiv.children[index].children[0];
+      lineNumberSpan.textContent = lineIndex + 1;
 
       // Update the cell spans
       for (let subindex = 0; subindex < columnCount; subindex++) {
         let hex = dataView.getUint8(lineIndex * columnCount + subindex).toString(16);
-        boxDiv.children[index].children[subindex + 1 /* Skip line number span */].textContent = hex.length === 1 ? '0' + hex : hex;
+        const cellSpan = boxDiv.children[index].children[subindex + 1 /* Skip line number span */];
+        cellSpan.classList.toggle('leading-zero', hex.length === 1);
+        cellSpan.textContent = hex;
       }
     }
 
