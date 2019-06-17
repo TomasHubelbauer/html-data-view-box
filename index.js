@@ -16,7 +16,19 @@ window.addEventListener('load', () => {
   let lineCount = 0;
   while (!lineDiv || lineDiv.offsetTop < boxDiv.offsetHeight) {
     lineDiv = document.createElement('div');
-    lineDiv.textContent = lineCount++;
+
+    const lineNumberSpan = document.createElement('span');
+    lineNumberSpan.className = 'lineNumberSpan';
+    lineNumberSpan.textContent = ++lineCount;
+    lineDiv.append(lineNumberSpan);
+
+    for (let index = 0; index < columnCount; index++) {
+      const cellSpan = document.createElement('span');
+      cellSpan.className = 'cellSpan';
+      cellSpan.textContent = 'TODO';
+      lineDiv.append(cellSpan);
+    }
+
     boxDiv.append(lineDiv);
   }
 
@@ -24,14 +36,18 @@ window.addEventListener('load', () => {
     const hiddenCount = Math.floor(boxDiv.scrollTop / lineDiv.clientHeight);
 
     // TODO: Add or remove rows as needed if the viewport changed (so that resize handler can use `render` too)
+    // TODO: Reorder rows in groups as they come off screen instead of updating contents of all
     for (let index = 0; index < lineCount; index++) {
-      const lineNumber = hiddenCount + index;
-      let line = '';
-      for (let subindex = 0; subindex < columnCount; subindex++) {
-        line += dataView.getUint8(lineNumber * columnCount + subindex) + ' ';
-      }
+      const lineIndex = hiddenCount + index;
 
-      boxDiv.children[index].textContent = `${lineNumber}: ${line}`;
+      // Update the line number span
+      boxDiv.children[index].children[0].textContent = lineIndex + 1;
+
+      // Update the cell spans
+      for (let subindex = 0; subindex < columnCount; subindex++) {
+        let hex = dataView.getUint8(lineIndex * columnCount + subindex).toString(16);
+        boxDiv.children[index].children[subindex + 1 /* Skip line number span */].textContent = hex.length === 1 ? '0' + hex : hex;
+      }
     }
 
     const idealHeight = rowCount * lineDiv.clientHeight;

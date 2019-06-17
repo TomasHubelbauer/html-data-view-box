@@ -4,6 +4,7 @@ html {
 
 body {
   box-sizing: border-box;
+  font: normal 16px sans-serif;
   height: 100%;
   margin: 0;
   padding: 1em;
@@ -21,4 +22,15 @@ body {
 
   /* Ensure the line heights are consistent and do not break, instead scroll */
   white-space: nowrap;
+}
+
+#boxDiv .lineNumberSpan {
+  display: inline-block;
+  width: 25px;
+}
+
+#boxDiv .cellSpan {
+  display: inline-block;
+  font-family: monospace;
+  margin: 0 .5ex;
 }
