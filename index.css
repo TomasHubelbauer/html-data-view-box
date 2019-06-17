@@ -10,6 +10,15 @@ body {
 }
 
 #boxDiv {
+  /* Ensure internal padding (top & bottom) causes a scroll bar to appear */
+  box-sizing: border-box;
+
+  /* Fill up all of the available vertical space */
   height: 100%;
+
+  /* Ensure scroll bar appears once we artificially inflate the paddings */
   overflow: auto;
+
+  /* Ensure the line heights are consistent and do not break, instead scroll */
+  white-space: nowrap;
 }

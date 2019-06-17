@@ -41,4 +41,7 @@ created with them again but with different content this time).
 
 ---
 
-- Use `margin` over padding `div`s
+- Adjust the number of rows on the fly (add/remove if viewport change)
+- Reorder existing rows instead of rewriting the contents of all each time
+  - Move first to last if first came off screen and update it, leave rest intact
+  - Do the same group-wise if more then 1 went off-screen

@@ -12,9 +12,6 @@ window.addEventListener('load', () => {
 
   const boxDiv = document.getElementById('boxDiv');
 
-  const headPadDiv = document.createElement('div');
-  boxDiv.append(headPadDiv);
-
   let lineDiv;
   let lineCount = 0;
   while (!lineDiv || lineDiv.offsetTop < boxDiv.offsetHeight) {
@@ -23,15 +20,10 @@ window.addEventListener('load', () => {
     boxDiv.append(lineDiv);
   }
 
-  const footPadDiv = document.createElement('div');
-  boxDiv.append(footPadDiv);
-
   function render() {
-    // Ignore scroll events created when scrolling programatically (interferes with this logic)
-    boxDiv.removeEventListener('scroll', render);
-
     const hiddenCount = Math.floor(boxDiv.scrollTop / lineDiv.clientHeight);
 
+    // TODO: Add or remove rows as needed if the viewport changed (so that resize handler can use `render` too)
     for (let index = 0; index < lineCount; index++) {
       const lineNumber = hiddenCount + index;
       let line = '';
@@ -39,23 +31,18 @@ window.addEventListener('load', () => {
         line += dataView.getUint8(lineNumber * columnCount + subindex) + ' ';
       }
 
-      boxDiv.children[index + 1 /* Pad */].textContent = `${lineNumber}: ${line}`;
+      boxDiv.children[index].textContent = `${lineNumber}: ${line}`;
     }
 
     const idealHeight = rowCount * lineDiv.clientHeight;
-
     const padHeight = idealHeight - lineCount * lineDiv.clientHeight;
     const headHeight = Math.min(boxDiv.scrollTop, padHeight);
     const footHeight = padHeight - headHeight;
 
-    headPadDiv.style.height = headHeight + 'px';
-    footPadDiv.style.height = footHeight + 'px';
-
-    // Restore listening to scroll events initated by the user
-    boxDiv.addEventListener('scroll', render);
+    boxDiv.style.paddingTop = headHeight + 'px';
+    boxDiv.style.paddingBottom = footHeight + 'px';
   }
 
   boxDiv.addEventListener('scroll', render);
-
   render();
 });
