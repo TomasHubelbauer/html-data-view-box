@@ -1,5 +1,7 @@
 # HTML `DataView` Box
 
+[**DEMO**](https://tomashubelbauer.github.io/html-data-view-box)
+
 This is a prototype of/an experiment in building an HTML component for displaying
 the contents of a `DataView` with scroll support. The `DataView` might contain a
 lot of data, so we cannot create HTML elements for the entirety of its contents,
