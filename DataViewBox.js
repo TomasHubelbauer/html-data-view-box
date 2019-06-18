@@ -84,7 +84,7 @@ class DataViewBox extends HTMLElement {
 
         const cellHexSpan = this.shadow.children[index].children[1 + subindex * 3];
         cellHexSpan.classList.toggle('zero', byte === 0);
-        cellHexSpan.classList.toggle('leading-zero', byte < 10);
+        cellHexSpan.classList.toggle('leading-zero', byte < 16);
         cellHexSpan.textContent = byte.toString(16);
 
         const cellDecSpan = this.shadow.children[index].children[1 + subindex * 3 + 1];
