@@ -21,7 +21,7 @@
 
 .cellDecSpan {
   display: inline-block;
-  width: 20px;
+  width: 25px;
 }
 
 .cellDecSpan.zero {
@@ -30,5 +30,5 @@
 
 .cellAsciiSpan {
   display: inline-block;
-  width: 15px;
+  width: 20px;
 }
