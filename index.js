@@ -4,6 +4,7 @@ window.addEventListener('load', () => {
   byteArray[0] = 1;
   byteArray[1 + 16 * 1] = 2;
   byteArray[2 + 16 * 2] = 3;
+  byteArray[3 + 16 * 3] = 65;
 
   const dataView = new DataView(arrayBuffer);
 
@@ -30,6 +31,10 @@ window.addEventListener('load', () => {
       const cellDecSpan = document.createElement('span');
       cellDecSpan.className = 'cellDecSpan';
       lineDiv.append(cellDecSpan);
+
+      const cellAsciiSpan = document.createElement('span');
+      cellAsciiSpan.className = 'cellAsciiSpan';
+      lineDiv.append(cellAsciiSpan);
     }
 
     boxDiv.append(lineDiv);
@@ -49,16 +54,19 @@ window.addEventListener('load', () => {
 
       // Update the cell spans
       for (let subindex = 0; subindex < columnCount; subindex++) {
-        const dec = dataView.getUint8(lineIndex * columnCount + subindex);
-        const cellDecSpan = boxDiv.children[index].children[1 /* Skip line number span */ + subindex * 2 + 1 /* Skip hex spans */];
-        cellDecSpan.classList.toggle('zero', dec === 0);
-        cellDecSpan.textContent = dec;
+        const byte = dataView.getUint8(lineIndex * columnCount + subindex);
 
-        const hex = dec.toString(16);
-        const cellHexSpan = boxDiv.children[index].children[1 /* Skip line number span */ + subindex * 2 /* Skip dec spans */];
-        cellHexSpan.classList.toggle('zero', dec === 0);
-        cellHexSpan.classList.toggle('leading-zero', hex.length === 1);
-        cellHexSpan.textContent = hex;
+        const cellHexSpan = boxDiv.children[index].children[1 + subindex * 3];
+        cellHexSpan.classList.toggle('zero', byte === 0);
+        cellHexSpan.classList.toggle('leading-zero', byte < 10);
+        cellHexSpan.textContent = byte.toString(16);
+
+        const cellDecSpan = boxDiv.children[index].children[1 + subindex * 3 + 1];
+        cellDecSpan.classList.toggle('zero', byte === 0);
+        cellDecSpan.textContent = byte;
+
+        const cellAsciiSpan = boxDiv.children[index].children[1 + subindex * 3 + 2];
+        cellAsciiSpan.textContent = String.fromCharCode(byte);
       }
     }
 

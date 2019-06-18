@@ -46,9 +46,14 @@ body {
 
 #boxDiv .cellDecSpan {
   display: inline-block;
-  width: 25px;
+  width: 20px;
 }
 
 #boxDiv .cellDecSpan.zero {
   visibility: hidden;
+}
+
+#boxDiv .cellAsciiSpan {
+  display: inline-block;
+  width: 15px;
 }

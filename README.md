@@ -25,7 +25,9 @@ with respect to the visible area.
     position, not stuck on top of the container reflecting the minute changes in
     scroll instead of just flickering with new values
 - Make the number of cells configurable
+- Add an attribute for making the number of cells dependent on the viewport width
 - Consider making this a custom DOM element
   - https://developer.mozilla.org/en-US/docs/Web/Web_Components
   - https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
   - https://caniuse.com/#feat=custom-elementsv1
+- Fix performance issues now that the view contains all of hex, dec and ASCII
