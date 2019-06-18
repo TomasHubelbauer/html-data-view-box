@@ -9,5 +9,6 @@ window.addEventListener('load', () => {
   byteArray[3 + 16 * 3] = 65;
 
   const dataView = new DataView(arrayBuffer);
+  document.getElementById('dataViewBox').styleSrc = 'DataViewBox.css';
   document.getElementById('dataViewBox').dataView = dataView;
 });

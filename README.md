@@ -18,7 +18,6 @@ with respect to the visible area.
 - Adjust the number of rows automatically if dimensions change (add/remove)
 - Recycle rows that go out of view and generally shift and reuse rows in group
   instead of updating all rows all the time the line index per scroll changes
-- Ensure this works on mobile after having been converted to a web component
 - See if flex on the line might be faster than `display: inline-block` on the spans
 - Consider introducing a toggle for the stick-line behavior:
   if enabled, the first line will be scrolled in accordance to the scrollbar

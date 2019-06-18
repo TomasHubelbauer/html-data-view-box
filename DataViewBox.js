@@ -57,7 +57,7 @@ class DataViewBox extends HTMLElement {
 
     const styleLink = document.createElement('link');
     styleLink.rel = 'stylesheet';
-    styleLink.href = 'DataViewBox.css';
+    styleLink.href = this.styleSrc;
     this.shadow.append(styleLink);
 
     this.update();
