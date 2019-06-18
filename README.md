@@ -14,20 +14,16 @@ the scrollbar position and extract the corresponding portion of the `DataView` o
 the length given by the visible area. This keeps the number of elements needed constant
 with respect to the visible area.
 
-- Adjust the number of rows on the fly (add/remove if viewport change)
-- Reorder existing rows instead of rewriting the contents of all each time
-  - Move first to last if first came off screen and update it, leave rest intact
-  - Do the same group-wise if more then 1 went off-screen
-- Test this on mobile and try to fix this based on mobile testing feedback
+- Add an attribute for the number of cells (default based on viewport)
+- Adjust the number of rows automatically if dimensions change (add/remove)
+- Recycle rows that go out of view and generally shift and reuse rows in group
+  instead of updating all rows all the time the line index per scroll changes
+- Ensure this works on mobile after having been converted to a web component
 - See if flex on the line might be faster than `display: inline-block` on the spans
-- Consider introducing a toggle for the stick-line behavior
-  - If enabled, the first line will be scrolled in accordance to the scrollbar
-    position, not stuck on top of the container reflecting the minute changes in
-    scroll instead of just flickering with new values
-- Make the number of cells configurable
-- Add an attribute for making the number of cells dependent on the viewport width
-- Consider making this a custom DOM element
-  - https://developer.mozilla.org/en-US/docs/Web/Web_Components
-  - https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
-  - https://caniuse.com/#feat=custom-elementsv1
+- Consider introducing a toggle for the stick-line behavior:
+  if enabled, the first line will be scrolled in accordance to the scrollbar
+  position, not stuck on top of the container reflecting the minute changes in
+  scroll instead of just flickering with new values
 - Fix performance issues now that the view contains all of hex, dec and ASCII
+- Refactor the web component to use class fields more intelligently, maybe even private ones if supported well
+- Wrap everything currently in the shadow DOM in one more `div` to apply the `padding` to so it doesn't leak out

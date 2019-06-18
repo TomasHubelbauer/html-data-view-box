@@ -1,0 +1,34 @@
+
+.lineNumberSpan {
+  display: inline-block;
+  width: 25px;
+}
+
+.cellHexSpan {
+  display: inline-block;
+  font-family: monospace;
+  margin: 0 .5ex;
+}
+
+.cellHexSpan.zero {
+  color: gray;
+}
+
+.cellHexSpan.leading-zero::before {
+  color: gray;
+  content: '0';
+}
+
+.cellDecSpan {
+  display: inline-block;
+  width: 20px;
+}
+
+.cellDecSpan.zero {
+  visibility: hidden;
+}
+
+.cellAsciiSpan {
+  display: inline-block;
+  width: 15px;
+}

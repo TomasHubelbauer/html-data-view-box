@@ -10,9 +10,12 @@ body {
   padding: 1em;
 }
 
-#boxDiv {
+#dataViewBox {
   /* Ensure internal padding (top & bottom) causes a scroll bar to appear */
   box-sizing: border-box;
+
+  /* Make block as by default web components are inline */
+  display: block;
 
   /* Fill up all of the available vertical space */
   height: 100%;
@@ -22,38 +25,4 @@ body {
 
   /* Ensure the line heights are consistent and do not break, instead scroll */
   white-space: nowrap;
-}
-
-#boxDiv .lineNumberSpan {
-  display: inline-block;
-  width: 25px;
-}
-
-#boxDiv .cellHexSpan {
-  display: inline-block;
-  font-family: monospace;
-  margin: 0 .5ex;
-}
-
-#boxDiv .cellHexSpan.zero {
-  color: gray;
-}
-
-#boxDiv .cellHexSpan.leading-zero::before {
-  color: gray;
-  content: '0';
-}
-
-#boxDiv .cellDecSpan {
-  display: inline-block;
-  width: 20px;
-}
-
-#boxDiv .cellDecSpan.zero {
-  visibility: hidden;
-}
-
-#boxDiv .cellAsciiSpan {
-  display: inline-block;
-  width: 15px;
 }
