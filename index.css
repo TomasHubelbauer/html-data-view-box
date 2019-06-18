@@ -29,13 +29,26 @@ body {
   width: 25px;
 }
 
-#boxDiv .cellSpan {
+#boxDiv .cellHexSpan {
   display: inline-block;
   font-family: monospace;
   margin: 0 .5ex;
 }
 
-#boxDiv .cellSpan.leading-zero::before {
+#boxDiv .cellHexSpan.zero {
+  color: gray;
+}
+
+#boxDiv .cellHexSpan.leading-zero::before {
   color: gray;
   content: '0';
+}
+
+#boxDiv .cellDecSpan {
+  display: inline-block;
+  width: 25px;
+}
+
+#boxDiv .cellDecSpan.zero {
+  visibility: hidden;
 }

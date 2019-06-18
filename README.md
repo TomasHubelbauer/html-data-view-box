@@ -24,7 +24,6 @@ with respect to the visible area.
   - If enabled, the first line will be scrolled in accordance to the scrollbar
     position, not stuck on top of the container reflecting the minute changes in
     scroll instead of just flickering with new values
-- Make cells with the value of zero gray (in addition to the leading zero)
 - Make the number of cells configurable
 - Consider making this a custom DOM element
   - https://developer.mozilla.org/en-US/docs/Web/Web_Components

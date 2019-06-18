@@ -23,10 +23,13 @@ window.addEventListener('load', () => {
     lineDiv.append(lineNumberSpan);
 
     for (let index = 0; index < columnCount; index++) {
-      const cellSpan = document.createElement('span');
-      cellSpan.className = 'cellSpan';
-      cellSpan.textContent = 'TODO';
-      lineDiv.append(cellSpan);
+      const cellHexSpan = document.createElement('span');
+      cellHexSpan.className = 'cellHexSpan';
+      lineDiv.append(cellHexSpan);
+
+      const cellDecSpan = document.createElement('span');
+      cellDecSpan.className = 'cellDecSpan';
+      lineDiv.append(cellDecSpan);
     }
 
     boxDiv.append(lineDiv);
@@ -46,10 +49,16 @@ window.addEventListener('load', () => {
 
       // Update the cell spans
       for (let subindex = 0; subindex < columnCount; subindex++) {
-        let hex = dataView.getUint8(lineIndex * columnCount + subindex).toString(16);
-        const cellSpan = boxDiv.children[index].children[subindex + 1 /* Skip line number span */];
-        cellSpan.classList.toggle('leading-zero', hex.length === 1);
-        cellSpan.textContent = hex;
+        const dec = dataView.getUint8(lineIndex * columnCount + subindex);
+        const cellDecSpan = boxDiv.children[index].children[1 /* Skip line number span */ + subindex * 2 + 1 /* Skip hex spans */];
+        cellDecSpan.classList.toggle('zero', dec === 0);
+        cellDecSpan.textContent = dec;
+
+        const hex = dec.toString(16);
+        const cellHexSpan = boxDiv.children[index].children[1 /* Skip line number span */ + subindex * 2 /* Skip dec spans */];
+        cellHexSpan.classList.toggle('zero', dec === 0);
+        cellHexSpan.classList.toggle('leading-zero', hex.length === 1);
+        cellHexSpan.textContent = hex;
       }
     }
 
