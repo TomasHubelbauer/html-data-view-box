@@ -92,9 +92,7 @@ class DataViewBox extends HTMLElement {
         cellDecSpan.textContent = byte;
 
         const cellAsciiSpan = this.shadow.children[index].children[1 + subindex * 3 + 2];
-        if (byte >= 32 && byte <= 126) {
-          cellAsciiSpan.textContent = String.fromCharCode(byte);
-        }
+        cellAsciiSpan.textContent = byte >= 32 && byte <= 126 ? String.fromCharCode(byte) : '';
       }
     }
 
