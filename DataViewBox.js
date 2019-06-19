@@ -5,6 +5,8 @@ class DataViewBox extends HTMLElement {
     this.raiseHover = (event) => {
       const hoverEvent = new Event('hover');
       hoverEvent.title = event.currentTarget.title;
+      hoverEvent.absoluteOffset = event.currentTarget.dataset.absoluteOffset;
+      hoverEvent.relativeOffset = event.currentTarget.dataset.relativeOffset;
       this.dispatchEvent(hoverEvent);
     };
   }
@@ -113,18 +115,24 @@ class DataViewBox extends HTMLElement {
         cellHexSpan.classList.toggle('leading-zero', byte < 16);
         cellHexSpan.title = label;
         cellHexSpan.style.background = color;
+        cellHexSpan.dataset.absoluteOffset = this.dataView.byteOffset + lineIndex * columnCount + subindex;
+        cellHexSpan.dataset.relativeOffset = lineIndex * columnCount + subindex;
         cellHexSpan.textContent = byte.toString(16);
 
         const cellDecSpan = this.shadow.children[index].children[1 + subindex * 3 + 1];
         cellDecSpan.classList.toggle('zero', byte === 0);
         cellDecSpan.title = label;
         cellDecSpan.style.background = color;
+        cellDecSpan.dataset.absoluteOffset = this.dataView.byteOffset + lineIndex * columnCount + subindex;
+        cellDecSpan.dataset.relativeOffset = lineIndex * columnCount + subindex;
         cellDecSpan.textContent = byte;
 
         const cellAsciiSpan = this.shadow.children[index].children[1 + subindex * 3 + 2];
         cellAsciiSpan.classList.toggle('empty', byte < 32 || byte > 126);
         cellAsciiSpan.title = label;
         cellAsciiSpan.style.background = color;
+        cellAsciiSpan.dataset.absoluteOffset = this.dataView.byteOffset + lineIndex * columnCount + subindex;
+        cellAsciiSpan.dataset.relativeOffset = lineIndex * columnCount + subindex;
         cellAsciiSpan.textContent = byte >= 32 && byte <= 126 ? String.fromCharCode(byte) : ' ';
         cellAsciiSpan.textContent = cellAsciiSpan.textContent === ' ' ? '_' : cellAsciiSpan.textContent;
       }

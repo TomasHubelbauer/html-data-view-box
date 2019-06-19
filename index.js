@@ -19,6 +19,6 @@ window.addEventListener('load', () => {
   const dataView = new DataView(arrayBuffer);
   document.getElementById('dataViewBox').styleSrc = 'DataViewBox.css';
   document.getElementById('dataViewBox').labels = labels;
-  document.getElementById('dataViewBox').addEventListener('hover', event => document.title = event.title);
+  document.getElementById('dataViewBox').addEventListener('hover', event => document.title = `${event.relativeOffset}/${event.absoluteOffset}: ${event.title}`);
   document.getElementById('dataViewBox').dataView = dataView;
 });
