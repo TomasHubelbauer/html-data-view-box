@@ -73,7 +73,8 @@ class DataViewBox extends HTMLElement {
     const columnCount = 16;
     const rowCount = Math.floor(this.dataView.byteLength / columnCount);
 
-    const hiddenCount = Math.floor(this.scrollTop / this.lineHeight);
+    const offsetCount = Math.floor(this.dataView.byteOffset / columnCount);
+    const hiddenCount = this.getAttribute('no-virtualization') ? 0 : Math.floor(this.scrollTop / this.lineHeight);
 
     // TODO: Add or remove rows as needed if the viewport changed (so that resize handler can use `render` too)
     // TODO: Reorder rows in groups as they come off screen instead of updating contents of all
@@ -83,9 +84,10 @@ class DataViewBox extends HTMLElement {
       // Update the line number span
       const lineNumberSpan = this.shadow.children[index].children[0];
 
-      const firstIndex = lineIndex * columnCount;
-      const lastIndex = lineIndex * columnCount + columnCount - 1;
-      lineNumberSpan.textContent = `ln #${lineIndex + 1} (${firstIndex}-${lastIndex} dec / ${firstIndex.toString(16)}-${lastIndex.toString(16)} hex)`;
+      const firstIndex = this.dataView.byteOffset + lineIndex * columnCount;
+      const lastIndex = this.dataView.byteOffset + lineIndex * columnCount + columnCount - 1;
+      const lineNumber = offsetCount + lineIndex + 1;
+      lineNumberSpan.textContent = `ln #${lineNumber} (${firstIndex}-${lastIndex} dec / ${firstIndex.toString(16)}-${lastIndex.toString(16)} hex)`;
 
       // Update the cell spans
       for (let subindex = 0; subindex < columnCount; subindex++) {
