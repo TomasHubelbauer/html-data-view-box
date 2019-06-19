@@ -82,7 +82,10 @@ class DataViewBox extends HTMLElement {
 
       // Update the line number span
       const lineNumberSpan = this.shadow.children[index].children[0];
-      lineNumberSpan.textContent = lineIndex + 1;
+
+      const firstIndex = lineIndex * columnCount;
+      const lastIndex = lineIndex * columnCount + columnCount - 1;
+      lineNumberSpan.textContent = `ln #${lineIndex + 1} (${firstIndex}-${lastIndex} dec / ${firstIndex.toString(16)}-${lastIndex.toString(16)} hex)`;
 
       // Update the cell spans
       for (let subindex = 0; subindex < columnCount; subindex++) {
