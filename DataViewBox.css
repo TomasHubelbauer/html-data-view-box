@@ -31,7 +31,7 @@ div:nth-child(even) {
 }
 
 .cellDecSpan.zero {
-  visibility: hidden;
+  color: transparent;
 }
 
 .cellDecSpan:hover {
