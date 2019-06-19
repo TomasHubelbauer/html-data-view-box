@@ -15,6 +15,7 @@ the length given by the visible area. This keeps the number of elements needed c
 with respect to the visible area.
 
 - Change layout to be columns side by side to allow automatic widths and global styling of all column cells
+  - Add a sticky header with cell indices
 - Add an attribute for the number of cells (default based on viewport)
 - Adjust the number of rows automatically if dimensions change (add/remove)
 - Recycle rows that go out of view and generally shift and reuse rows in group
