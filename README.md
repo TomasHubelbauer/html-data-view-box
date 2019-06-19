@@ -14,6 +14,7 @@ the scrollbar position and extract the corresponding portion of the `DataView` o
 the length given by the visible area. This keeps the number of elements needed constant
 with respect to the visible area.
 
+- Add an attribute for disabling virtualization until I've ironed out all the kinks
 - Add an attribute for the number of cells (default based on viewport)
 - Adjust the number of rows automatically if dimensions change (add/remove)
 - Recycle rows that go out of view and generally shift and reuse rows in group
