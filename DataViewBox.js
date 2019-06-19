@@ -2,6 +2,11 @@ class DataViewBox extends HTMLElement {
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: 'open' });
+    this.raiseHover = (event) => {
+      const hoverEvent = new Event('hover');
+      hoverEvent.title = event.currentTarget.title;
+      this.dispatchEvent(hoverEvent);
+    };
   }
 
   connectedCallback() {
@@ -37,14 +42,17 @@ class DataViewBox extends HTMLElement {
       for (let index = 0; index < columnCount; index++) {
         const cellHexSpan = document.createElement('span');
         cellHexSpan.className = 'cellHexSpan';
+        cellHexSpan.addEventListener('mouseover', this.raiseHover);
         lineDiv.append(cellHexSpan);
 
         const cellDecSpan = document.createElement('span');
         cellDecSpan.className = 'cellDecSpan';
+        cellDecSpan.addEventListener('mouseover', this.raiseHover);
         lineDiv.append(cellDecSpan);
 
         const cellAsciiSpan = document.createElement('span');
         cellAsciiSpan.className = 'cellAsciiSpan';
+        cellAsciiSpan.addEventListener('mouseover', this.raiseHover);
         lineDiv.append(cellAsciiSpan);
       }
 
@@ -92,17 +100,21 @@ class DataViewBox extends HTMLElement {
       // Update the cell spans
       for (let subindex = 0; subindex < columnCount; subindex++) {
         const byte = this.dataView.getUint8(lineIndex * columnCount + subindex);
+        const label = this.labels && this.labels[lineIndex * columnCount + subindex] ? this.labels[lineIndex * columnCount + subindex] : '';
 
         const cellHexSpan = this.shadow.children[index].children[1 + subindex * 3];
         cellHexSpan.classList.toggle('zero', byte === 0);
         cellHexSpan.classList.toggle('leading-zero', byte < 16);
+        cellHexSpan.title = label;
         cellHexSpan.textContent = byte.toString(16);
 
         const cellDecSpan = this.shadow.children[index].children[1 + subindex * 3 + 1];
         cellDecSpan.classList.toggle('zero', byte === 0);
+        cellDecSpan.title = label;
         cellDecSpan.textContent = byte;
 
         const cellAsciiSpan = this.shadow.children[index].children[1 + subindex * 3 + 2];
+        cellAsciiSpan.title = label;
         cellAsciiSpan.textContent = byte >= 32 && byte <= 126 ? String.fromCharCode(byte) : '';
       }
     }

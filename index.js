@@ -3,12 +3,19 @@ customElements.define('th-dataviewbox', DataViewBox);
 window.addEventListener('load', () => {
   const arrayBuffer = new ArrayBuffer(1000);
   const byteArray = new Uint8Array(arrayBuffer);
+  const labels = [];
   byteArray[0] = 1;
+  labels[0] = 'Number one';
   byteArray[1 + 16 * 1] = 2;
+  labels[1 + 16 * 1] = 'Number two';
   byteArray[2 + 16 * 2] = 3;
+  labels[2 + 16 * 2] = 'Number three';
   byteArray[3 + 16 * 3] = 65;
+  labels[3 + 16 * 3] = 'Number sixty-five, the ASCII letter capital A';
 
   const dataView = new DataView(arrayBuffer);
   document.getElementById('dataViewBox').styleSrc = 'DataViewBox.css';
+  document.getElementById('dataViewBox').labels = labels;
+  document.getElementById('dataViewBox').addEventListener('hover', event => document.title = event.title);
   document.getElementById('dataViewBox').dataView = dataView;
 });

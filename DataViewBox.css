@@ -1,13 +1,20 @@
-
 .lineNumberSpan {
   display: inline-block;
   width: 250px;
+}
+
+div:nth-child(even) {
+  background: #f0f0f0;
 }
 
 .cellHexSpan {
   display: inline-block;
   font-family: monospace;
   margin: 0 .5ex;
+}
+
+.cellHexSpan:hover {
+  outline: 1px solid #ccc;
 }
 
 .cellHexSpan.zero {
@@ -28,7 +35,15 @@
   visibility: hidden;
 }
 
+.cellDecSpan:hover {
+  outline: 1px solid #ccc;
+}
+
 .cellAsciiSpan {
   display: inline-block;
   width: 20px;
+}
+
+.cellAsciiSpan:hover {
+  outline: 1px solid #ccc;
 }
