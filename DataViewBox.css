@@ -46,3 +46,7 @@ div:nth-child(even) {
 .cellAsciiSpan:hover {
   outline: 1px solid #ccc;
 }
+
+.cellAsciiSpan.empty {
+  white-space: pre;
+}

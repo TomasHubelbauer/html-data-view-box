@@ -8,6 +8,7 @@ window.addEventListener('load', () => {
   labels[0] = '#777777 Number sixty-five, the ASCII letter capital A';
   byteArray[1] = 65;
   labels[1] = '#777777 Number sixty-five, the ASCII letter capital A';
+  labels[2] = '#777777 Empty';
   byteArray[1 + 16 * 1] = 2;
   labels[1 + 16 * 1] = 'Number two';
   byteArray[2 + 16 * 2] = 3;
