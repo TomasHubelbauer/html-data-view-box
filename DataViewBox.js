@@ -126,6 +126,7 @@ class DataViewBox extends HTMLElement {
         cellAsciiSpan.title = label;
         cellAsciiSpan.style.background = color;
         cellAsciiSpan.textContent = byte >= 32 && byte <= 126 ? String.fromCharCode(byte) : ' ';
+        cellAsciiSpan.textContent = cellAsciiSpan.textContent === ' ' ? '_' : cellAsciiSpan.textContent;
       }
     }
 
