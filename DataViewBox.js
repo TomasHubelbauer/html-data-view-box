@@ -2,7 +2,11 @@ class DataViewBox extends HTMLElement {
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: 'open' });
-    this.addEventListener('scroll', this.update);
+
+    // Ignore scroll handing if the virtualization is disabled
+    if (!this.getAttribute('no-virtualization')) {
+      this.addEventListener('scroll', this.update);
+    }
   }
 
   connectedCallback() {
@@ -27,7 +31,8 @@ class DataViewBox extends HTMLElement {
 
     let lineDiv;
     let lineCount = 0;
-    while (!lineDiv || lineDiv.offsetTop < this.offsetHeight) {
+    console.log(this.getAttribute('no-virtualization'));
+    while (!lineDiv || (this.getAttribute('no-virtualization') ? lineCount < rowCount : lineDiv.offsetTop < this.offsetHeight)) {
       lineDiv = document.createElement('div');
 
       const lineNumberSpan = document.createElement('span');
