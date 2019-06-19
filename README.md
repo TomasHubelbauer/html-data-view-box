@@ -14,6 +14,7 @@ the scrollbar position and extract the corresponding portion of the `DataView` o
 the length given by the visible area. This keeps the number of elements needed constant
 with respect to the visible area.
 
+- Add proper support for grouping by color (probably extend `labels` to be objects)
 - Change layout to be columns side by side to allow automatic widths and global styling of all column cells
   - Add a sticky header with cell indices
 - Add an attribute for the number of cells (default based on viewport)

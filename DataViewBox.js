@@ -100,21 +100,30 @@ class DataViewBox extends HTMLElement {
       // Update the cell spans
       for (let subindex = 0; subindex < columnCount; subindex++) {
         const byte = this.dataView.getUint8(lineIndex * columnCount + subindex);
-        const label = this.labels && this.labels[lineIndex * columnCount + subindex] ? this.labels[lineIndex * columnCount + subindex] : '';
+
+        let label = this.labels && this.labels[lineIndex * columnCount + subindex] ? this.labels[lineIndex * columnCount + subindex] : '';
+        let color;
+        if (label.startsWith('#')) {
+          color = label.substring(0, 7);
+          label = label.substring(8);
+        }
 
         const cellHexSpan = this.shadow.children[index].children[1 + subindex * 3];
         cellHexSpan.classList.toggle('zero', byte === 0);
         cellHexSpan.classList.toggle('leading-zero', byte < 16);
         cellHexSpan.title = label;
+        cellHexSpan.style.background = color;
         cellHexSpan.textContent = byte.toString(16);
 
         const cellDecSpan = this.shadow.children[index].children[1 + subindex * 3 + 1];
         cellDecSpan.classList.toggle('zero', byte === 0);
         cellDecSpan.title = label;
+        cellDecSpan.style.background = color;
         cellDecSpan.textContent = byte;
 
         const cellAsciiSpan = this.shadow.children[index].children[1 + subindex * 3 + 2];
         cellAsciiSpan.title = label;
+        cellAsciiSpan.style.background = color;
         cellAsciiSpan.textContent = byte >= 32 && byte <= 126 ? String.fromCharCode(byte) : '';
       }
     }

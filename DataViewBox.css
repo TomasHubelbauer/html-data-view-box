@@ -10,7 +10,6 @@ div:nth-child(even) {
 .cellHexSpan {
   display: inline-block;
   font-family: monospace;
-  margin: 0 .5ex;
 }
 
 .cellHexSpan:hover {
