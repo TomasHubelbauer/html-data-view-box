@@ -2,11 +2,6 @@ class DataViewBox extends HTMLElement {
   constructor() {
     super();
     this.shadow = this.attachShadow({ mode: 'open' });
-
-    // Ignore scroll handing if the virtualization is disabled
-    if (!this.getAttribute('no-virtualization')) {
-      this.addEventListener('scroll', this.update);
-    }
   }
 
   connectedCallback() {
@@ -31,7 +26,6 @@ class DataViewBox extends HTMLElement {
 
     let lineDiv;
     let lineCount = 0;
-    console.log(this.getAttribute('no-virtualization'));
     while (!lineDiv || (this.getAttribute('no-virtualization') ? lineCount < rowCount : lineDiv.offsetTop < this.offsetHeight)) {
       lineDiv = document.createElement('div');
 
@@ -66,6 +60,13 @@ class DataViewBox extends HTMLElement {
     this.shadow.append(styleLink);
 
     this.update();
+
+    // Ignore scroll handing if the virtualization is disabled
+    if (!this.getAttribute('no-virtualization')) {
+      // TODO: Move this back to the constructor when the attribute is removed
+      // as currently we need to wait for the element to mount to read its value
+      this.addEventListener('scroll', this.update);
+    }
   }
 
   update() {
