@@ -4,9 +4,9 @@ class DataViewBox extends HTMLElement {
     this.shadow = this.attachShadow({ mode: 'open' });
     this.raiseHover = (event) => {
       const hoverEvent = new Event('hover');
-      hoverEvent.title = event.currentTarget.title;
-      hoverEvent.absoluteOffset = event.currentTarget.dataset.absoluteOffset;
-      hoverEvent.relativeOffset = event.currentTarget.dataset.relativeOffset;
+      hoverEvent.relativeOffset = Number(event.currentTarget.dataset.offset);
+      hoverEvent.absoluteOffset = this.dataView.byteOffset + Number(event.currentTarget.dataset.offset);
+      hoverEvent.details = this.details[Number(event.currentTarget.dataset.offset)];
       this.dispatchEvent(hoverEvent);
     };
   }
@@ -103,36 +103,33 @@ class DataViewBox extends HTMLElement {
       for (let subindex = 0; subindex < columnCount; subindex++) {
         const byte = this.dataView.getUint8(lineIndex * columnCount + subindex);
 
-        let label = this.labels && this.labels[lineIndex * columnCount + subindex] ? this.labels[lineIndex * columnCount + subindex] : '';
         let color;
-        if (label.startsWith('#')) {
-          color = label.substring(0, 7);
-          label = label.substring(8);
+        let title;
+        if (this.details && this.details[lineIndex * columnCount + subindex]) {
+          color = this.details[lineIndex * columnCount + subindex].color;
+          title = this.details[lineIndex * columnCount + subindex].title;
         }
 
         const cellHexSpan = this.shadow.children[index].children[1 + subindex * 3];
         cellHexSpan.classList.toggle('zero', byte === 0);
         cellHexSpan.classList.toggle('leading-zero', byte < 16);
-        cellHexSpan.title = label;
+        cellHexSpan.title = title;
         cellHexSpan.style.background = color;
-        cellHexSpan.dataset.absoluteOffset = this.dataView.byteOffset + lineIndex * columnCount + subindex;
-        cellHexSpan.dataset.relativeOffset = lineIndex * columnCount + subindex;
+        cellHexSpan.dataset.offset = lineIndex * columnCount + subindex;
         cellHexSpan.textContent = byte.toString(16);
 
         const cellDecSpan = this.shadow.children[index].children[1 + subindex * 3 + 1];
         cellDecSpan.classList.toggle('zero', byte === 0);
-        cellDecSpan.title = label;
+        cellDecSpan.title = title;
         cellDecSpan.style.background = color;
-        cellDecSpan.dataset.absoluteOffset = this.dataView.byteOffset + lineIndex * columnCount + subindex;
-        cellDecSpan.dataset.relativeOffset = lineIndex * columnCount + subindex;
+        cellDecSpan.dataset.offset = lineIndex * columnCount + subindex;
         cellDecSpan.textContent = byte;
 
         const cellAsciiSpan = this.shadow.children[index].children[1 + subindex * 3 + 2];
         cellAsciiSpan.classList.toggle('empty', byte < 32 || byte > 126);
-        cellAsciiSpan.title = label;
+        cellAsciiSpan.title = title;
         cellAsciiSpan.style.background = color;
-        cellAsciiSpan.dataset.absoluteOffset = this.dataView.byteOffset + lineIndex * columnCount + subindex;
-        cellAsciiSpan.dataset.relativeOffset = lineIndex * columnCount + subindex;
+        cellAsciiSpan.dataset.offset = lineIndex * columnCount + subindex;
         cellAsciiSpan.textContent = byte >= 32 && byte <= 126 ? String.fromCharCode(byte) : ' ';
         cellAsciiSpan.textContent = cellAsciiSpan.textContent === ' ' ? '_' : cellAsciiSpan.textContent;
       }

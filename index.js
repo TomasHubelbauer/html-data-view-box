@@ -3,22 +3,32 @@ customElements.define('th-dataviewbox', DataViewBox);
 window.addEventListener('load', () => {
   const arrayBuffer = new ArrayBuffer(1000);
   const byteArray = new Uint8Array(arrayBuffer);
-  const labels = [];
+  const details = [];
   byteArray[0] = 65;
-  labels[0] = '#777777 Number sixty-five, the ASCII letter capital A';
+  details[0] = { color: '#f1f1f1', title: 'Number sixty-five, the ASCII letter capital A' };
   byteArray[1] = 65;
-  labels[1] = '#777777 Number sixty-five, the ASCII letter capital A';
-  labels[2] = '#777777 Empty';
+  details[1] = { color: '#f1f1f1', title: 'Number sixty-five, the ASCII letter capital A' };
+  details[2] = { color: '#f1f1f1', title: 'Empty' };
   byteArray[1 + 16 * 1] = 2;
-  labels[1 + 16 * 1] = 'Number two';
+  details[1 + 16 * 1] = { color: 'transparent', title: 'Number two' };
   byteArray[2 + 16 * 2] = 3;
-  labels[2 + 16 * 2] = 'Number three';
+  details[2 + 16 * 2] = { color: 'transparent', title: 'Number three' };
   byteArray[3 + 16 * 3] = 4;
-  labels[3 + 16 * 3] = 'Number four';
+  details[3 + 16 * 3] = { color: 'transparent', title: 'Number four' };
 
   const dataView = new DataView(arrayBuffer);
   document.getElementById('dataViewBox').styleSrc = 'DataViewBox.css';
-  document.getElementById('dataViewBox').labels = labels;
-  document.getElementById('dataViewBox').addEventListener('hover', event => document.title = `${event.relativeOffset}/${event.absoluteOffset}: ${event.title}`);
+  document.getElementById('dataViewBox').details = details;
   document.getElementById('dataViewBox').dataView = dataView;
+
+  document.getElementById('dataViewBox').addEventListener('hover', event => {
+    document.getElementById('detailsDiv').textContent = event.relativeOffset + '/' + event.absoluteOffset;
+
+    if (!event.details) {
+      return;
+    }
+
+    document.getElementById('detailsDiv').style.background = event.details.color;
+    document.getElementById('detailsDiv').textContent += ': ' + event.details.title;
+  });
 });
