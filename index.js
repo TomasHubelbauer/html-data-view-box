@@ -23,12 +23,11 @@ window.addEventListener('load', () => {
 
   document.getElementById('dataViewBox').addEventListener('hover', event => {
     document.getElementById('detailsDiv').textContent = event.relativeOffset + '/' + event.absoluteOffset;
+    document.getElementById('detailsDiv').style.background = 'none';
 
-    if (!event.details) {
-      return;
+    if (event.details) {
+      document.getElementById('detailsDiv').textContent += ': ' + event.details.title;
+      document.getElementById('detailsDiv').style.background = event.details.color;
     }
-
-    document.getElementById('detailsDiv').style.background = event.details.color;
-    document.getElementById('detailsDiv').textContent += ': ' + event.details.title;
   });
 });
