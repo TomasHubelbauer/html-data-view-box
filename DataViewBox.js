@@ -105,9 +105,11 @@ class DataViewBox extends HTMLElement {
 
         let color;
         let title;
+        let onClick;
         if (this.details && this.details[lineIndex * columnCount + subindex]) {
           color = this.details[lineIndex * columnCount + subindex].color;
           title = this.details[lineIndex * columnCount + subindex].title;
+          onClick = this.details[lineIndex * columnCount + subindex].onClick;
         }
 
         const cellHexSpan = this.shadow.children[index].children[1 + subindex * 3];
@@ -117,6 +119,7 @@ class DataViewBox extends HTMLElement {
         cellHexSpan.style.background = color;
         cellHexSpan.dataset.offset = lineIndex * columnCount + subindex;
         cellHexSpan.textContent = byte.toString(16);
+        cellHexSpan.onclick = onClick;
 
         const cellDecSpan = this.shadow.children[index].children[1 + subindex * 3 + 1];
         cellDecSpan.classList.toggle('zero', byte === 0);
@@ -124,6 +127,7 @@ class DataViewBox extends HTMLElement {
         cellDecSpan.style.background = color;
         cellDecSpan.dataset.offset = lineIndex * columnCount + subindex;
         cellDecSpan.textContent = byte;
+        cellDecSpan.onclick = onClick;
 
         const cellAsciiSpan = this.shadow.children[index].children[1 + subindex * 3 + 2];
         cellAsciiSpan.classList.toggle('empty', byte < 32 || byte > 126);
@@ -132,6 +136,7 @@ class DataViewBox extends HTMLElement {
         cellAsciiSpan.dataset.offset = lineIndex * columnCount + subindex;
         cellAsciiSpan.textContent = byte >= 32 && byte <= 126 ? String.fromCharCode(byte) : ' ';
         cellAsciiSpan.textContent = cellAsciiSpan.textContent === ' ' ? '_' : cellAsciiSpan.textContent;
+        cellAsciiSpan.onclick = onClick;
       }
     }
 

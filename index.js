@@ -5,7 +5,7 @@ window.addEventListener('load', () => {
   const byteArray = new Uint8Array(arrayBuffer);
   const details = [];
   byteArray[0] = 65;
-  details[0] = { color: '#f1f1f1', title: 'Number sixty-five, the ASCII letter capital A' };
+  details[0] = { color: '#f1f1f1', title: 'Number sixty-five, the ASCII letter capital A', onClick: () => alert('This is an A') };
   byteArray[1] = 65;
   details[1] = { color: '#f1f1f1', title: 'Number sixty-five, the ASCII letter capital A' };
   details[2] = { color: '#f1f1f1', title: 'Empty' };
