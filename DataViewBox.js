@@ -97,7 +97,8 @@ class DataViewBox extends HTMLElement {
       const firstIndex = this.dataView.byteOffset + lineIndex * columnCount;
       const lastIndex = this.dataView.byteOffset + lineIndex * columnCount + columnCount - 1;
       const lineNumber = offsetCount + lineIndex + 1;
-      lineNumberSpan.textContent = `ln #${lineNumber} (${firstIndex}-${lastIndex} dec / ${firstIndex.toString(16)}-${lastIndex.toString(16)} hex)`;
+      lineNumberSpan.textContent = firstIndex.toString(16) + '-' + lastIndex.toString(16);
+      lineNumberSpan.title = `ln #${lineNumber} (${firstIndex}-${lastIndex} dec / ${firstIndex.toString(16)}-${lastIndex.toString(16)} hex)`;
 
       // Update the cell spans
       for (let subindex = 0; subindex < columnCount; subindex++) {
