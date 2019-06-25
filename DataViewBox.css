@@ -1,8 +1,3 @@
-.lineNumberSpan {
-  display: inline-block;
-  width: 250px;
-}
-
 div:nth-child(even) {
   background: #f0f0f0;
 }

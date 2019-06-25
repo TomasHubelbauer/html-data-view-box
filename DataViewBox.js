@@ -36,11 +36,6 @@ class DataViewBox extends HTMLElement {
     while (!lineDiv || (this.getAttribute('no-virtualization') ? lineCount < rowCount : lineDiv.offsetTop < this.offsetHeight)) {
       lineDiv = document.createElement('div');
 
-      const lineNumberSpan = document.createElement('span');
-      lineNumberSpan.className = 'lineNumberSpan';
-      lineNumberSpan.textContent = ++lineCount;
-      lineDiv.append(lineNumberSpan);
-
       for (let index = 0; index < columnCount; index++) {
         const cellHexSpan = document.createElement('span');
         cellHexSpan.className = 'cellHexSpan';
@@ -91,16 +86,6 @@ class DataViewBox extends HTMLElement {
     for (let index = 0; index < this.lineCount; index++) {
       const lineIndex = hiddenCount + index;
 
-      // Update the line number span
-      const lineNumberSpan = this.shadow.children[index].children[0];
-
-      const firstIndex = this.dataView.byteOffset + lineIndex * columnCount;
-      const lastIndex = this.dataView.byteOffset + lineIndex * columnCount + columnCount - 1;
-      const lineNumber = offsetCount + lineIndex + 1;
-      lineNumberSpan.textContent = firstIndex.toString(16) + '-' + lastIndex.toString(16);
-      lineNumberSpan.title = `ln #${lineNumber} (${firstIndex}-${lastIndex} dec / ${firstIndex.toString(16)}-${lastIndex.toString(16)} hex)`;
-
-      // Update the cell spans
       for (let subindex = 0; subindex < columnCount; subindex++) {
         const byte = this.dataView.getUint8(lineIndex * columnCount + subindex);
 
@@ -113,7 +98,7 @@ class DataViewBox extends HTMLElement {
           onClick = this.details[lineIndex * columnCount + subindex].onClick;
         }
 
-        const cellHexSpan = this.shadow.children[index].children[1 + subindex * 3];
+        const cellHexSpan = this.shadow.children[index].children[subindex * 3];
         cellHexSpan.classList.toggle('zero', byte === 0);
         cellHexSpan.classList.toggle('leading-zero', byte < 16);
         cellHexSpan.title = title;
@@ -122,7 +107,7 @@ class DataViewBox extends HTMLElement {
         cellHexSpan.textContent = byte.toString(16);
         cellHexSpan.onclick = onClick;
 
-        const cellDecSpan = this.shadow.children[index].children[1 + subindex * 3 + 1];
+        const cellDecSpan = this.shadow.children[index].children[subindex * 3 + 1];
         cellDecSpan.classList.toggle('zero', byte === 0);
         cellDecSpan.title = title;
         cellDecSpan.style.background = color;
@@ -130,7 +115,7 @@ class DataViewBox extends HTMLElement {
         cellDecSpan.textContent = byte;
         cellDecSpan.onclick = onClick;
 
-        const cellAsciiSpan = this.shadow.children[index].children[1 + subindex * 3 + 2];
+        const cellAsciiSpan = this.shadow.children[index].children[subindex * 3 + 2];
         cellAsciiSpan.classList.toggle('empty', byte < 32 || byte > 126);
         cellAsciiSpan.title = title;
         cellAsciiSpan.style.background = color;
