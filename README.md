@@ -14,18 +14,41 @@ the scrollbar position and extract the corresponding portion of the `DataView` o
 the length given by the visible area. This keeps the number of elements needed constant
 with respect to the visible area.
 
-- Add proper support for grouping by color (probably extend `labels` to be objects)
-- Change layout to be columns side by side to allow automatic widths and global styling of all column cells
-  - Add a sticky header with cell indices
-- Add an attribute for the number of cells (default based on viewport)
-- Adjust the number of rows automatically if dimensions change (add/remove)
-- Recycle rows that go out of view and generally shift and reuse rows in group
-  instead of updating all rows all the time the line index per scroll changes
-- See if flex on the line might be faster than `display: inline-block` on the spans
-- Consider introducing a toggle for the stick-line behavior:
-  if enabled, the first line will be scrolled in accordance to the scrollbar
-  position, not stuck on top of the container reflecting the minute changes in
-  scroll instead of just flickering with new values
-- Fix performance issues now that the view contains all of hex, dec and ASCII
-- Refactor the web component to use class fields more intelligently, maybe even private ones if supported well
-- Wrap everything currently in the shadow DOM in one more `div` to apply the `padding` to so it doesn't leak out
+## To-Do
+
+### Add proper support for grouping by color (probably extend `labels` to be objects)
+
+### Change layout to be columns side by side to allow automatic widths and global styling of all column cells
+
+Add a sticky header with cell indices
+
+### Add an attribute for the number of cells (default based on viewport)
+
+### Adjust the number of rows automatically if dimensions change (add/remove)
+
+### Recycle rows that go out of view and generally shift and reuse rows in group
+
+Instead of updating all rows all the time the line index per scroll changes
+
+### See if flex on the line might be faster than `display: inline-block` on the spans
+
+### Consider introducing a toggle for the stick-line behavior
+
+If enabled, the first line will be scrolled in accordance to the scrollbar position,
+not stuck on top of the container reflecting the minute changes in scroll instead of
+just flickering with new values
+
+### Fix performance issues now that the view contains all of hex, dec and ASCII
+
+### Refactor the web component to use class fields more intelligently
+
+Maybe even private ones if supported well
+
+### Wrap everything currently in the shadow DOM in one more `div` to apply the `padding`
+
+So it doesn't leak out
+
+### Export using ESM to make the web component usable in other projects
+
+Host using GitHub Pages so there's a direct URL to the JS file with the right MIME.
+Add installation instructions to the readme.
