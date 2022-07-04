@@ -1,16 +1,17 @@
 html {
+  display: flex;
   height: 100%;
 }
 
 body {
   box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   font: normal 16px sans-serif;
-  height: 100%;
-  margin: 0;
-  padding: 1em;
 }
 
-#dataViewBox {
+th-dataviewbox {
   /* Ensure internal padding (top & bottom) causes a scroll bar to appear */
   box-sizing: border-box;
 
@@ -18,7 +19,7 @@ body {
   display: block;
 
   /* Fill up all of the available vertical space */
-  height: 100%;
+  flex: 1;
 
   /* Ensure scroll bar appears once we artificially inflate the paddings */
   overflow: auto;

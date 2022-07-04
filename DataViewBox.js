@@ -21,13 +21,18 @@ export default class DataViewBox extends HTMLElement {
     this.render();
   }
 
-  render() {
+  async render() {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = import.meta.url.replace(/.js$/, '.css');
+    this.shadowRoot.append(link);
+
     const columnCount = 16;
     const rowCount = Math.floor(this._dataView.byteLength / columnCount);
 
     let lineDiv;
     let lineCount = 0;
-    while (!lineDiv || (this.getAttribute('no-virtualization') ? lineCount < rowCount : lineDiv.offsetTop < this.offsetHeight)) {
+    while (!lineDiv || (this.getAttribute('no-virtualization') !== null ? lineCount < rowCount : lineDiv.offsetTop < this.offsetHeight)) {
       lineDiv = document.createElement('div');
 
       for (let index = 0; index < columnCount; index++) {
@@ -47,25 +52,19 @@ export default class DataViewBox extends HTMLElement {
         lineDiv.append(cellAsciiSpan);
       }
 
-
       this.shadowRoot.append(lineDiv);
       lineCount++;
+
+      // Wait for the element to be added to the DOM so `offsetTop` is up-to-date
+      await new Promise(resolve => window.requestAnimationFrame(resolve));
     }
 
     this.lineHeight = lineDiv.clientHeight;
     this.lineCount = lineCount;
 
-    const styleLink = document.createElement('link');
-    styleLink.rel = 'stylesheet';
-    styleLink.href = import.meta.url.replace(/.js$/, '.css');
-    this.shadowRoot.append(styleLink);
-
     this.update();
 
-    // Ignore scroll handing if the virtualization is disabled
-    if (!this.getAttribute('no-virtualization')) {
-      // TODO: Move this back to the constructor when the attribute is removed
-      // as currently we need to wait for the element to mount to read its value
+    if (this.getAttribute('no-virtualization') === null) {
       this.addEventListener('scroll', this.update);
     }
   }
@@ -75,7 +74,7 @@ export default class DataViewBox extends HTMLElement {
     const rowCount = Math.floor(this._dataView.byteLength / columnCount);
 
     const offsetCount = Math.floor(this._dataView.byteOffset / columnCount);
-    const hiddenCount = this.getAttribute('no-virtualization') ? 0 : Math.floor(this.scrollTop / this.lineHeight);
+    const hiddenCount = this.getAttribute('no-virtualization') !== null ? 0 : Math.floor(this.scrollTop / this.lineHeight);
 
     // TODO: Add or remove rows as needed if the viewport changed (so that resize handler can use `render` too)
     // TODO: Reorder rows in groups as they come off screen instead of updating contents of all
@@ -94,31 +93,31 @@ export default class DataViewBox extends HTMLElement {
           onClick = this.details[lineIndex * columnCount + subindex].onClick;
         }
 
-        const cellHexSpan = this.shadowRoot.children[index].children[subindex * 3];
+        const cellHexSpan = this.shadowRoot.children[index + 1].children[subindex * 3];
         cellHexSpan.classList.toggle('zero', byte === 0);
         cellHexSpan.classList.toggle('leading-zero', byte < 16);
         cellHexSpan.title = title;
         cellHexSpan.style.background = color;
         cellHexSpan.dataset.offset = lineIndex * columnCount + subindex;
         cellHexSpan.textContent = byte.toString(16);
-        cellHexSpan.onclick = onClick;
+        cellHexSpan.addEventListener('click', onClick);
 
-        const cellDecSpan = this.shadowRoot.children[index].children[subindex * 3 + 1];
+        const cellDecSpan = this.shadowRoot.children[index + 1].children[subindex * 3 + 1];
         cellDecSpan.classList.toggle('zero', byte === 0);
         cellDecSpan.title = title;
         cellDecSpan.style.background = color;
         cellDecSpan.dataset.offset = lineIndex * columnCount + subindex;
         cellDecSpan.textContent = byte;
-        cellDecSpan.onclick = onClick;
+        cellDecSpan.addEventListener('click', onClick);
 
-        const cellAsciiSpan = this.shadowRoot.children[index].children[subindex * 3 + 2];
+        const cellAsciiSpan = this.shadowRoot.children[index + 1].children[subindex * 3 + 2];
         cellAsciiSpan.classList.toggle('empty', byte < 32 || byte > 126);
         cellAsciiSpan.title = title;
         cellAsciiSpan.style.background = color;
         cellAsciiSpan.dataset.offset = lineIndex * columnCount + subindex;
         cellAsciiSpan.textContent = byte >= 32 && byte <= 126 ? String.fromCharCode(byte) : ' ';
         cellAsciiSpan.textContent = cellAsciiSpan.textContent === ' ' ? '_' : cellAsciiSpan.textContent;
-        cellAsciiSpan.onclick = onClick;
+        cellAsciiSpan.addEventListener('click', onClick);
       }
     }
 
