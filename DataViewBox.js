@@ -1,35 +1,29 @@
-class DataViewBox extends HTMLElement {
+export default class DataViewBox extends HTMLElement {
   constructor() {
     super();
-    this.shadow = this.attachShadow({ mode: 'open' });
-    this.raiseHover = (event) => {
-      const hoverEvent = new Event('hover');
-      hoverEvent.relativeOffset = Number(event.currentTarget.dataset.offset);
-      hoverEvent.absoluteOffset = this.dataView.byteOffset + Number(event.currentTarget.dataset.offset);
-      hoverEvent.details = this.details[Number(event.currentTarget.dataset.offset)];
-      this.dispatchEvent(hoverEvent);
-    };
+    this.attachShadow({ mode: 'open' });
   }
 
-  connectedCallback() {
-    // Note that at this point the layout information is not available yet so we cannot render yet
-    // The `dataView` field doesn't have a value yet either as it gains it in the `load` handler of `window`
-    // https://stackoverflow.com/q/56648928/2715716
-    //setTimeout(() => this.render(), 0);
-  }
+  raiseHover = (event) => {
+    const hoverEvent = new Event('hover');
+    hoverEvent.relativeOffset = Number(event.currentTarget.dataset.offset);
+    hoverEvent.absoluteOffset = this.dataView.byteOffset + Number(event.currentTarget.dataset.offset);
+    hoverEvent.details = this.details[Number(event.currentTarget.dataset.offset)];
+    this.dispatchEvent(hoverEvent);
+  };
 
   get dataView() {
     return this._dataView;
   }
 
-  set dataView(/** @type{DataView} */ dataView) {
+  set dataView(/** @type {DataView} */ dataView) {
     this._dataView = dataView;
     this.render();
   }
 
   render() {
     const columnCount = 16;
-    const rowCount = Math.floor(this.dataView.byteLength / columnCount);
+    const rowCount = Math.floor(this._dataView.byteLength / columnCount);
 
     let lineDiv;
     let lineCount = 0;
@@ -53,7 +47,9 @@ class DataViewBox extends HTMLElement {
         lineDiv.append(cellAsciiSpan);
       }
 
-      this.shadow.append(lineDiv);
+
+      this.shadowRoot.append(lineDiv);
+      lineCount++;
     }
 
     this.lineHeight = lineDiv.clientHeight;
@@ -61,8 +57,8 @@ class DataViewBox extends HTMLElement {
 
     const styleLink = document.createElement('link');
     styleLink.rel = 'stylesheet';
-    styleLink.href = this.styleSrc;
-    this.shadow.append(styleLink);
+    styleLink.href = import.meta.url.replace(/.js$/, '.css');
+    this.shadowRoot.append(styleLink);
 
     this.update();
 
@@ -76,9 +72,9 @@ class DataViewBox extends HTMLElement {
 
   update() {
     const columnCount = 16;
-    const rowCount = Math.floor(this.dataView.byteLength / columnCount);
+    const rowCount = Math.floor(this._dataView.byteLength / columnCount);
 
-    const offsetCount = Math.floor(this.dataView.byteOffset / columnCount);
+    const offsetCount = Math.floor(this._dataView.byteOffset / columnCount);
     const hiddenCount = this.getAttribute('no-virtualization') ? 0 : Math.floor(this.scrollTop / this.lineHeight);
 
     // TODO: Add or remove rows as needed if the viewport changed (so that resize handler can use `render` too)
@@ -87,7 +83,7 @@ class DataViewBox extends HTMLElement {
       const lineIndex = hiddenCount + index;
 
       for (let subindex = 0; subindex < columnCount; subindex++) {
-        const byte = this.dataView.getUint8(lineIndex * columnCount + subindex);
+        const byte = this._dataView.getUint8(lineIndex * columnCount + subindex);
 
         let color;
         let title;
@@ -98,7 +94,7 @@ class DataViewBox extends HTMLElement {
           onClick = this.details[lineIndex * columnCount + subindex].onClick;
         }
 
-        const cellHexSpan = this.shadow.children[index].children[subindex * 3];
+        const cellHexSpan = this.shadowRoot.children[index].children[subindex * 3];
         cellHexSpan.classList.toggle('zero', byte === 0);
         cellHexSpan.classList.toggle('leading-zero', byte < 16);
         cellHexSpan.title = title;
@@ -107,7 +103,7 @@ class DataViewBox extends HTMLElement {
         cellHexSpan.textContent = byte.toString(16);
         cellHexSpan.onclick = onClick;
 
-        const cellDecSpan = this.shadow.children[index].children[subindex * 3 + 1];
+        const cellDecSpan = this.shadowRoot.children[index].children[subindex * 3 + 1];
         cellDecSpan.classList.toggle('zero', byte === 0);
         cellDecSpan.title = title;
         cellDecSpan.style.background = color;
@@ -115,7 +111,7 @@ class DataViewBox extends HTMLElement {
         cellDecSpan.textContent = byte;
         cellDecSpan.onclick = onClick;
 
-        const cellAsciiSpan = this.shadow.children[index].children[subindex * 3 + 2];
+        const cellAsciiSpan = this.shadowRoot.children[index].children[subindex * 3 + 2];
         cellAsciiSpan.classList.toggle('empty', byte < 32 || byte > 126);
         cellAsciiSpan.title = title;
         cellAsciiSpan.style.background = color;
@@ -135,3 +131,5 @@ class DataViewBox extends HTMLElement {
     this.style.paddingBottom = footHeight + 'px';
   }
 }
+
+customElements.define('th-dataviewbox', DataViewBox);
